@@ -1,7 +1,10 @@
 package uz.mamarasulov.rest_sample.service;
 
+import uz.mamarasulov.rest_sample.exception.UpdateStateException;
 import uz.mamarasulov.rest_sample.model.Order;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 public interface OrderService {
@@ -18,4 +21,14 @@ public interface OrderService {
 
     void deleteByIdIn(List<Long> ids);
 
+    default void checkForUpdate(Long orderId) {
+        Order currentOrder = findById(orderId);
+        Instant now = Instant.now();
+
+        Duration duration = Duration.between(currentOrder.getUpdateAt(), now);
+
+        if (duration.getSeconds() > 5) {
+            throw new UpdateStateException("Can't update");
+        }
+    }
 }
