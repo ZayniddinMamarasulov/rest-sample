@@ -1,6 +1,7 @@
 package uz.mamarasulov.rest_sample.repository.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import uz.mamarasulov.rest_sample.exception.EntityNotFoundException;
 import uz.mamarasulov.rest_sample.model.Client;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Repository
+@Component
 public class InMemoryClientRepository implements ClientRepository {
 
     private OrderRepository orderRepository;

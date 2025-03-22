@@ -26,6 +26,7 @@ public class Client {
     private List<Order> orders = new ArrayList<>();
 
     public void addOrder(Order order) {
+        if (orders == null) orders = new ArrayList<>();
         orders.add(order);
     }
 
@@ -33,5 +34,12 @@ public class Client {
         orders = orders.stream()
                 .filter(o -> !o.getId().equals(orderId))
                 .collect(Collectors.toList());
+    }
+
+    public List<Order> getOrders() {
+        if (orders == null)
+            orders = new ArrayList<>();
+
+        return orders;
     }
 }
