@@ -7,10 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.mamarasulov.rest_sample.mapper.v2.ClientMapperV2;
 import uz.mamarasulov.rest_sample.model.Client;
+import uz.mamarasulov.rest_sample.model.Order;
 import uz.mamarasulov.rest_sample.service.ClientService;
 import uz.mamarasulov.rest_sample.web.model.ClientListResponse;
 import uz.mamarasulov.rest_sample.web.model.ClientResponse;
+import uz.mamarasulov.rest_sample.web.model.CreateClientWithOrderRequest;
 import uz.mamarasulov.rest_sample.web.model.UpsertClientRequest;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/client")
@@ -59,4 +63,20 @@ public class ClientControllerV2 {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/save-with-orders")
+    public ResponseEntity<ClientResponse> createWithOrders(@RequestBody CreateClientWithOrderRequest request) {
+        Client client = Client.builder().name(request.getName()).build();
+        List<Order> orders = request.getOrders().stream()
+                .map(orderRequest -> Order.builder()
+                        .product(orderRequest.getProduct())
+                        .cost(orderRequest.getCost())
+                        .build()
+                ).toList();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                clientMapperV2.clientToResponse(databaseClientService.saveWithOrders(client, orders))
+        );
+    }
+
 }
