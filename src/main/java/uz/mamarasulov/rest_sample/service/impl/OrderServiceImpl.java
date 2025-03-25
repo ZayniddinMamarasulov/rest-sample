@@ -2,12 +2,14 @@ package uz.mamarasulov.rest_sample.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import uz.mamarasulov.rest_sample.exception.EntityNotFoundException;
 import uz.mamarasulov.rest_sample.exception.UpdateStateException;
 import uz.mamarasulov.rest_sample.model.Order;
 import uz.mamarasulov.rest_sample.repository.OrderRepository;
 import uz.mamarasulov.rest_sample.service.OrderService;
+import uz.mamarasulov.rest_sample.web.model.OrderFilter;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -17,6 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+
+    @Override
+    public List<Order> filterByOrder(OrderFilter filter) {
+        throw new NotImplementedException();
+    }
 
     @Override
     public List<Order> findAll() {

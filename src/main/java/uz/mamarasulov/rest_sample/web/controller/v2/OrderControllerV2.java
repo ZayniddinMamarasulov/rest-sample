@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import uz.mamarasulov.rest_sample.mapper.v2.OrderMapperV2;
 import uz.mamarasulov.rest_sample.model.Order;
 import uz.mamarasulov.rest_sample.service.OrderService;
+import uz.mamarasulov.rest_sample.web.model.OrderFilter;
 import uz.mamarasulov.rest_sample.web.model.OrderListResponse;
 import uz.mamarasulov.rest_sample.web.model.OrderResponse;
 import uz.mamarasulov.rest_sample.web.model.UpsertOrderRequest;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/order")
@@ -20,6 +23,15 @@ public class OrderControllerV2 {
     private final OrderService databaseOrderService;
 
     private final OrderMapperV2 orderMapperV2;
+
+    @GetMapping("/filter")
+    public ResponseEntity<OrderListResponse> filterBy(OrderFilter filter) {
+        return ResponseEntity.ok(
+                orderMapperV2.orderListToOrderListResponse(
+                        databaseOrderService.filterByOrder(filter)
+                )
+        );
+    }
 
 
     @GetMapping

@@ -1,14 +1,17 @@
 package uz.mamarasulov.rest_sample.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.mamarasulov.rest_sample.exception.EntityNotFoundException;
 import uz.mamarasulov.rest_sample.model.Client;
 import uz.mamarasulov.rest_sample.model.Order;
 import uz.mamarasulov.rest_sample.repository.DatabaseOrderRepository;
+import uz.mamarasulov.rest_sample.repository.OrderSpecification;
 import uz.mamarasulov.rest_sample.service.ClientService;
 import uz.mamarasulov.rest_sample.service.OrderService;
 import uz.mamarasulov.rest_sample.utils.BeanUtils;
+import uz.mamarasulov.rest_sample.web.model.OrderFilter;
 
 import java.util.List;
 
@@ -19,6 +22,14 @@ public class DatabaseOrderService implements OrderService {
     private final DatabaseOrderRepository orderRepository;
 
     private final ClientService databaseClientService;
+
+    @Override
+    public List<Order> filterByOrder(OrderFilter filter) {
+        return orderRepository.findAll(OrderSpecification.withFilter(filter),
+                PageRequest.of(
+                        filter.getPageNumber(), filter.getPageSize()
+                )).getContent();
+    }
 
     @Override
     public List<Order> findAll() {

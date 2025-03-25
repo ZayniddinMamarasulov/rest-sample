@@ -2,12 +2,15 @@ package uz.mamarasulov.rest_sample.service;
 
 import uz.mamarasulov.rest_sample.exception.UpdateStateException;
 import uz.mamarasulov.rest_sample.model.Order;
+import uz.mamarasulov.rest_sample.web.model.OrderFilter;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
 public interface OrderService {
+
+    List<Order> filterByOrder(OrderFilter filter);
 
     List<Order> findAll();
 
